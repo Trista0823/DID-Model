@@ -16,13 +16,11 @@ xtset code date
 gen time_category = 0
 replace time_category = 1 if date>=date("2010-3-31","YMD")
 
-
 // Group Descriptive Statistics
 bysort time_category category: tabstat volatility cirrculation_value daily_return volume trade_value, stat(count mean p50 min max)
 logout, save("describe") word   ///
  replace: bysort time_category category: ///
  tabstat volatility cirrculation_value daily_return volume trade_value, stat(count mean p50 min max)
-
 
 // Logarithm
 gen volatility = (high-low)/(0.5*high+0.5*low)
@@ -57,7 +55,6 @@ duplicates drop category month mean_volatility, force
 export time_series.csv, replace
 twoway (line mean_volatility month if category==1, yaxis(1)) (line mean_volatility month if category==0)
 restore
-
 
 //DID Model
 diff $ylist, treat(category) period(time_category) cov($xlist) report support
