@@ -1,6 +1,5 @@
 clear
-cd "C:\Users\bmy31\Documents\毕业\金融\数据与模型"
-import delimited C:\Users\bmy31\Documents\毕业\金融\数据与模型\数据.csv, clear
+import delimited data.csv, clear
 gen date_new = date(date,"YMD")
 format date_new %td
 drop date
