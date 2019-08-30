@@ -1,5 +1,8 @@
 clear
 import delimited data.csv, clear
+
+
+# Preprocess
 gen date_new = date(date,"YMD")
 format date_new %td
 drop date
@@ -26,6 +29,7 @@ global xlist log_return_2 log_trade_value_2 log_cirrculation_value_2 log_volume_
 
 drop if q <= 198|q == 205
 
+# Generating Dummy Varibles
 forvalues i = 1(-1)1{
 gen q_m_`i' = 0
 replace q_m_`i' = 1 if q == 201-`i'
@@ -38,6 +42,7 @@ replace q_`j' = 1 if q == 200+`j'
 replace q_`j' = q_`j'*category
 }
 
+# Pretest Regression (Event Study)
 xi: xtreg log_volatility  q_* i.q  $xlist, fe level(99)
 est sto reg
 outreg2 [reg] using pretest.xls, replace st(coef se tstat pval ci_low ci_high)
